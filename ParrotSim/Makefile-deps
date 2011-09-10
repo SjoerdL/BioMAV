@@ -1,0 +1,32 @@
+SOURCEFILES:=\
+	Parrot.cpp \
+	Pole.cpp \
+	World.cpp \
+	vector3d.cpp \
+	WorldBlock.cpp \
+	WavefrontObj.cpp \
+	Texture.cpp \
+	Simulator.cpp \
+	LuaStringParameterToolbox.cpp \
+	LuaToolbox.cpp \
+	Mesh.cpp
+
+JAVADEPS:=\
+	./Java/bin/nl/ru/ai/projects/parrot/dronecontrol/simulator/SimulatedDrone.class \
+	./Java/bin/nl/ru/ai/projects/parrot/dronecontrol/simulator/Simulator.class
+	
+JNI_CPP_FILES:=\
+	javasrc/Lua2JavaTypeConversion.cpp
+
+LUA_PACKAGES:=\
+	SimulationEnv.pkg \
+	ParrotEnv.pkg
+
+EMBEDDED_LIBRARIES:=\
+	libs/LuaGL/src/libluagl.a \
+	libs/LuaGL/src/libluaglu.a
+	
+EMBEDDED_LIBRARY_CLEAN_DIRS:=\
+	libs/LuaGL/src
+
+

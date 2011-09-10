@@ -1,0 +1,2 @@
+call setPaths
+parrotSimulator

@@ -1,0 +1,9 @@
+$cfile "../src/vector3d.hpp"
+$cfile "../src/Texture.hpp"
+
+$cfile "../src/World.hpp"
+
+
+$cfile "../src/WorldBlock.hpp"
+$cfile "../src/Pole.hpp"
+$cfile "../src/Parrot.hpp"

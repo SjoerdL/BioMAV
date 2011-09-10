@@ -1,0 +1,50 @@
+.PHONY: clean all
+
+CURRENT_DIR=$(shell pwd)
+
+LIBPATHS+=libs/LuaGL/src
+LIBS+=luagl luaglu
+INCLUDES+=/libs/LuaGL/include
+
+JNI_OBJS=$(addprefix $(JAVA_OBJ_BUILDDIR),$(addsuffix .o,$(notdir $(basename $(JAVADEPS))))) $(addprefix $(JAVA_OBJ_BUILDDIR),$(addsuffix .o,$(notdir $(basename $(JNI_CPP_FILES)))))
+
+.SECONDARY:
+
+all:  $(EMBEDDED_LIBRARIES) $(STANDALONE_TARGET) $(JNI_LIB_TARGET)
+
+JNI_LIB_OBJS=$(LUA_OBJS) $(addprefix $(BUILDDIR),$(addsuffix .o,$(basename $(SOURCEFILES)))) $(JNI_OBJS)
+
+$(JNI_LIB_TARGET): $(EMBEDDED_LIBRARIES) $(JNI_LIB_OBJS)
+	$(COMPILER) -shared $(CFLAGS) -o $@ $(JNI_LIB_OBJS) $(addprefix -L,$(LIBPATHS)) $(addprefix -l,$(LIBS))
+
+STANDALONE_OBJS=$(LUA_OBJS) $(addprefix $(BUILDDIR),$(addsuffix .o,$(basename $(STANDALONE_SOURCES) $(SOURCEFILES))))
+$(STANDALONE_TARGET): $(EMBEDDED_LIBRARIES) $(STANDALONE_OBJS)
+	$(COMPILER) $(CFLAGS) -o $@ $(STANDALONE_OBJS) $(addprefix -L,$(LIBPATHS)) $(addprefix -l,$(LIBS))
+
+$(LUA_OBJ_BUILDDIR)%.o: $(LUADIR)%.pkg
+	@-mkdir -p $(LUA_OBJ_BUILDDIR)
+	export INCLUDES="$(addprefix ../,$(filter-out /%,$(INCLUDES))) $(filter /%,$(INCLUDES))" && export CFLAGS="$(CFLAGS)" && cd $(LUADIR) && $(MAKE) ../$@
+
+$(JAVA_OBJ_BUILDDIR)%.o: $(JAVADEPS) $(JAVADIR)%.cpp
+	@-mkdir -p $(JAVA_OBJ_BUILDDIR)
+	export INCLUDES="$(addprefix ../,$(filter-out /%,$(INCLUDES))) $(filter /%,$(INCLUDES))" && export CFLAGS="$(CFLAGS)" && cd $(JAVADIR) && $(MAKE) ../$@
+
+Java/bin/%.class: Java/src/%.java
+	cd Java && $(MAKE) all
+
+libs/LuaGL/%:
+	export LUA_INCLUDE=../../../$(LUA_INCLUDE) && cd libs/LuaGL/src && $(MAKE) $(notdir $@)
+
+%.o: $(dir %)../src/$(notdir $(basename %)).cpp
+	@-mkdir -p $(BUILDDIR)
+	$(COMPILER) $(CFLAGS) -c -o $@ $(join $(dir $^),$(addprefix ../$(SOURCEDIR),$(notdir $^))) $(addprefix -I,$(INCLUDES)) 
+
+clean:
+	-cd $(BUILDDIR) && rm -r *
+	-rm $(STANDALONE_TARGET)
+	-rm $(JNI_LIB_TARGET)
+	-cd $(LUADIR) && rm *.cpp *.hpp
+	-cd $(JAVADIR) && rm $(addsuffix .hpp,$(basename $(notdir $(JAVADEPS))))
+	-cd Java && $(MAKE) clean
+	-$(foreach dir,$(EMBEDDED_LIBRARY_CLEAN_DIRS),cd $(dir) && $(MAKE) clean && cd $(CURRENT_DIR) && ) echo
+

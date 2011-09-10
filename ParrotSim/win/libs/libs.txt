@@ -1,0 +1,7 @@
+armadillo
+boost
+devil
+lua-5.1
+ode
+SDL-1.2
+tolua++

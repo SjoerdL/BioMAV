@@ -1,0 +1,32 @@
+include Makefile-deps
+
+STANDALONE_SOURCES=main.cpp
+JNI_SOURCES=
+
+SOURCEDIR=src/
+BUILDDIR=bin/
+
+LUADIR=luapkg/
+LUA_OBJ_BUILDDIR=$(BUILDDIR)$(LUADIR)
+LUA_OBJS=$(addprefix $(LUA_OBJ_BUILDDIR),$(addsuffix .o,$(basename $(LUA_PACKAGES))))
+
+JAVADIR=javasrc/
+JAVA_OBJ_BUILDDIR=$(BUILDDIR)$(JAVADIR)
+
+STANDALONE_TARGET=parrotSimulator.exe
+JNI_LIB_TARGET=Java/ParrotSimulator.dll
+
+COMPILER=g++
+
+LUA_INCLUDE:=libs/lua-5.1/include
+
+INCLUDES+=luapkg $(LUA_INCLUDE) win/libs/tolua++/include win/libs/SDL-1.2/include win/libs/devil/include win/libs/armadillo/include win/libs/ode/include win/libs/boost/include
+LIBS+= mingw32 SDLmain SDL.dll ode opengl32 glu32 DevIL ILU ILUT lua tolua++5.1 glew32.dll boost_thread-mgw45-mt-s-1_47
+LIBPATHS+=win/libs/SDL-1.2/lib win/libs/devil/lib win/libs/lua-5.1/lib win/libs/tolua++/lib win/libs/ode/ode/src/.libs win/libs/boost/lib
+
+#SEPARATOR
+
+CFLAGS+=-Wl,--add-stdcall-alias
+#-DDEBUG
+
+include Makefile-main

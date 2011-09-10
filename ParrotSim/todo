@@ -1,0 +1,42 @@
+Important
+
+- Implement sensory data stream!!!
+  - gyro information - This is done... more to come!
+
+- Route simulation timings to Java
+
+- Update parrot.lua (hover more)
+
+- Document everything!
+
+- Add compiler flag to exclude OpenGL and SDL libraries from linking (to be able to compile
+  the simulator in the TK)
+
+- Add ability to generate OpenGL contexts without window
+  Target behavior of Simulation Java-class:
+    activateVideoInterface: activates camera image rendering
+    activateRendering:      activates external simulation rendering
+
+
+Smaller things
+
+- get rid of tolua.releaseownership(worldBlock);
+  during world creation
+
+- add texture loading errors
+
+- add possibility to add lights to the simulation
+
+- Make build scripts nicer (for example, introduce "checkPython" functions)
+
+
+Done
+
+- Possibility to switch off rendering (deintialize OpenGL and SDL)
+
+- Better integrate lua errors
+
+- Add possiblitiy to disable the whole rendering engine (to speed things up)
+
+- Let build terminate if tolua++ or python not found!
+
