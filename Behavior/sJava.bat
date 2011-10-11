@@ -1,0 +1,1 @@
+java -cp Java/bin;Java/lib/* -Djava.library.path=Java nl.ru.ai.projects.parrot.biomav.Main
