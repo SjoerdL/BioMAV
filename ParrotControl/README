@@ -1,0 +1,54 @@
+-------------------------
+ Directory ParrotControl
+-------------------------
+
+Contents:
+
+  1.0 The directory and its contents
+    1.1 GroundStation
+    1.2 JavaDroneControl
+    1.3 RemoteControl
+    
+------------------------------------
+ 1.0 The directory and its contents
+------------------------------------
+
+The directory contains programs that allow to control the drone directly via a 
+joystick and/or libraries that provide an application programming interface to
+Java. Details of the different projects can be found in the corresponding
+directories or in the next subjections of this file.
+
+-------------------
+ 1.1 GroundStation
+-------------------
+
+This project contains a library which should provide API to a Java environment
+using the original Parrot AR.Drone SDK (complied with 1.6). However, we did not
+succeed to create a stable build of the Parrot AR.Drone on our buildsystem
+(Ubuntu 11.4) so this program was abandoned due to stability issues.
+
+However, the JNI-library from this project still was used in our final project 
+to expose the SDL-based joystick control to Java.
+
+-------------------
+ 1.2 RemoteControl
+-------------------
+
+The stable, pure-Java implementation of the communication layer with the Parrot
+AR.Drone. It provides a Java interface to control and retrieve navdata and
+camera images from the drone. Therefore, it uses parts from the JavaDrone-
+project obtainable under the BSD license at http://code.google.com/p/javadrone/
+
+The program implements the communication layer compatible with the 1.6-SDK
+firmware.
+
+-------------------
+ 1.3 RemoteControl
+-------------------
+
+Standalone program using the original AR.Drone SDK to control the drone and
+receive navdata and images. Pretty much was only to test the capabilities of
+the original SDK. Did nut run completely stable under Ubuntu 11.04 either. 
+However, can contribute some fun as a pure remote control program.
+
+
