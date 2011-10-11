@@ -33,9 +33,16 @@ import javax.swing.SwingUtilities;
 import nl.ru.ai.projects.parrot.dronecontrol.VideoPollInterface;
 import nl.ru.ai.projects.parrot.dronecontrol.javadronecontrol.DroneGroundStation;
 
+/**
+ * A little test class demonstrating the image streaming capabilities of the JavaDroneControl
+ * library. 
+ * 
+ * @author paul
+ */
 public class Test01 extends JFrame {
   private static DroneGroundStation drone = null;
   
+  // Buffered image to hold data from the image stream
   private BufferedImage image = new BufferedImage(VideoPollInterface.FRONT_VIDEO_FRAME_WIDTH, VideoPollInterface.FRONT_VIDEO_FRAME_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
   
   public Test01() {
@@ -43,6 +50,7 @@ public class Test01 extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(VideoPollInterface.FRONT_VIDEO_FRAME_WIDTH, VideoPollInterface.FRONT_VIDEO_FRAME_HEIGHT);
     
+    // Timer used to poll images from drone
     Timer timer = new Timer();
     timer.scheduleAtFixedRate(new TimerTask() {
       @Override
@@ -62,14 +70,18 @@ public class Test01 extends JFrame {
   
   @Override
   public void paint(Graphics g) {
+    // Clutch the image inside the window (could be done nicer - whatever)
     g.drawImage(image, 0, 0, this);
   }
   
   public static void main(String[] args) {
     try {
+      // First step: create a ground station for a given drone
       drone = new DroneGroundStation();
+      // Assuming the WiFi connection has been established, connect to the default IP 
       drone.connect("192.168.1.1");
 
+      // If done, initialize test-window
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
