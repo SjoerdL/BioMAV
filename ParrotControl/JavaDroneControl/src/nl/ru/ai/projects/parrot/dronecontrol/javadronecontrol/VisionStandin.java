@@ -75,7 +75,7 @@ public class VisionStandin implements VideoReceivedInterface {
   public synchronized void connect(InetAddress target, DroneGroundStation groundStation) throws IOException {
     disconnect();
     
-    videoReader = new VideoReader(this, target, 5555);
+    videoReader = new VideoReader(this, target, VIDEO_PORT);
     readerThread = new Thread(videoReader);
     readerThread.setDaemon(true);
     readerThread.start();

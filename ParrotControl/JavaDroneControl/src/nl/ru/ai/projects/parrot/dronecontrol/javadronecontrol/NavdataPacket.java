@@ -22,7 +22,30 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class wraps a navdata packet as received via the UDP to the drone and extracts the standard
+ * state fields nad the demo-data set from it. The class furthermore implements packet validation
+ * via checksum checking.
+ * 
+ * To use this class initialize it using the default constructor. After initialization you can
+ * parse/wrap a {@link DatagramPacket} using the function {link #parseNavdata(DatagramPacket)}. The parsed 
+ * data then is available via the public fields of this object. If the parsing goes wrong, the
+ * method throws a {@link NavdataPacketFormatException}.
+ * 
+ * @author Paul Konstantin Gerke
+ *
+ */
 public class NavdataPacket {
+  /**
+   * Calculates the check sum across the specifed amount of bytes in the given byte buffer
+   *   
+   * @param bytes
+   *   ByteBuffer array containing the data that the checksum should be computed on. The checksum
+   *   computation starts at the current position of the buffer cursor.
+   * @param len
+   *   Amount of bytes that should be included for the checksum computation
+   * @return
+   */
   public static int computeChecksum(ByteBuffer bytes, int len) {
     int result = 0;
     for (int i = 0; i < len; i++) {
@@ -33,6 +56,8 @@ public class NavdataPacket {
   }
   
   public static final int HID_CHECKSUM = 0xFFFF;
+  
+  /* Constants copied from official Parrot SDK */
   
   public static final int ARDRONE_FLY_MASK            = 1 << 0;  /*!< FLY MASK : (0) ardrone is landed, (1) ardrone is flying */
   public static final int ARDRONE_VIDEO_MASK          = 1 << 1;  /*!< VIDEO MASK : (0) video disable, (1) video enable */
@@ -64,15 +89,22 @@ public class NavdataPacket {
   public static final int ARDRONE_COM_WATCHDOG_MASK   = 1 << 30; /*!< Communication Watchdog : (1) com problem, (0) Com is ok */
   public static final int ARDRONE_EMERGENCY_MASK      = 1 << 31;  /*!< Emergency landing : (0) no emergency; (1) emergency */
 
+  /**
+   * Exception thrown if the received navdata packet contained invalid data.
+   * 
+   * @author paul
+   *
+   */
   public static class NavdataPacketFormatException extends Exception {
     private static final long serialVersionUID = -9002844056303380102L;
 
+    /**
+     * Creates a NavdataPacketFormatException with the specified reason.
+     * 
+     * @param why
+     */
     public NavdataPacketFormatException(String why) {
       super(why);
-    }
-
-    public NavdataPacketFormatException() {
-      super();
     }
   }
   

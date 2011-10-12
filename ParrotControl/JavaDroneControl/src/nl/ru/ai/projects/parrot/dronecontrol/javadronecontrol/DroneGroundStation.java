@@ -18,14 +18,10 @@ package nl.ru.ai.projects.parrot.dronecontrol.javadronecontrol;
 
 import nl.ru.ai.projects.parrot.dronecontrol.ParrotDroneInterface;
 import nl.ru.ai.projects.parrot.dronecontrol.SensorDataObserver;
-import nl.ru.ai.projects.parrot.dronecontrol.SensoryDataInterface;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-
-import nl.ru.ai.projects.parrot.dronecontrol.ControlInterface;
 
 public class DroneGroundStation implements ParrotDroneInterface, NavdataChannelObserver, Runnable {
   public static final int MIN_HEIGHT = 200;
