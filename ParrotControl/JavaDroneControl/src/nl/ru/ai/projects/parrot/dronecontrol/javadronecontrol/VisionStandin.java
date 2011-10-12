@@ -131,6 +131,7 @@ public class VisionStandin implements VideoReceivedInterface {
   /**
    * Returns the timestamp of the last received frame
    * @return
+   *   Timestamp in milliseconds
    */
   public synchronized long getTimeStamp() {
     return timestamp;

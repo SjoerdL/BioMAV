@@ -45,6 +45,7 @@ public class NavdataPacket {
    * @param len
    *   Amount of bytes that should be included for the checksum computation
    * @return
+   *   The computed checksum
    */
   public static int computeChecksum(ByteBuffer bytes, int len) {
     int result = 0;

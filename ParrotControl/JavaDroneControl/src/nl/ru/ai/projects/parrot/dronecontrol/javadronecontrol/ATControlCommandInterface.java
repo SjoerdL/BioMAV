@@ -27,6 +27,39 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <p>
+ * This class implements several the AT command channel with the Parrot AR.Drone. It can 
+ * send a variety of important AT commands to the AR.Drone, however, not the full set
+ * of AT commands described in the AR.Drone SDK is implemented yet. A command is sent by
+ * connecting the object to the drone using the {@link #connect(InetAddress)} function and
+ * then calling the different methods that corresponding to the different AT commands the
+ * drone can understand.
+ * </p>
+ * 
+ * <p>
+ * It is important to note that the AT command implementation performs a certain level of
+ * abstraction: The functions {@link #flyForward(double)}, {@link #flySideways(double)},
+ * {@link #spin(double)}, and {@link #setUpSpeed(double)} can be called after each other.
+ * As a result the speed vectors along the different degrees of freedom are sent in a
+ * mixed way to the drone. Example:
+ * </p>
+ * 
+ *   <code><pre>
+ *     commandInterface.flyForward(0.5);
+ *     commandInterface.flySideways(0.4);
+ *   </pre></code>
+ *   
+ * <p>
+ * This lets the drone fly forward by pitching the drone to 0.5 of the maximum pitch
+ * angle and to the right (sideways) by rolling to 0.4 of the maximum roll angle. Such
+ * a mixed command can also be reset by calling {@link #hover()} which sends a hover command
+ * to the drone and resets all internal speed values for the different degrees of freedom.
+ * </p>
+ * 
+ * @author Paul Konstantin Gerke
+ *
+ */
 public class ATControlCommandInterface {
   public static final int PORT = 5556;
   public static final int COMMAND_STROBE_DELAY = 30; // milliseconds
@@ -34,10 +67,37 @@ public class ATControlCommandInterface {
   public static final int COMMAND_REPEATITIONS = 5;
   public static final int COM_WATCHDOG_DELAY = 200;
 
+  /**
+   * <p>When sending an AT*REF command these bits
+   * must always be set or the command destroys the drone trimming!!!</p>
+   * 
+   * <p>THIS IS NOT DOCUMENTED IN THE OFFICIAL SDK!</p> 
+   */
+  protected static final int AT_REF_MAGIC = 0x11540000;
+  
+  /**
+   * Interface describing the capabilities of an AT command that can 
+   * be sent to the drone
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private interface Command {
+    /**
+     * Creates the command string to be sent to the drone
+     * 
+     * @return
+     *   AT-command that should be sent to the drone
+     */
     public String buildString();
   }
-  
+
+  /**
+   * Implementation of the flat-trim AT-Command
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class FlatTrimCommand implements Command {
     @Override
     public String buildString() {
@@ -45,6 +105,12 @@ public class ATControlCommandInterface {
     }
   }
   
+  /**
+   * Implementation of the watchdog timer reset AT-Command
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class WatchDogCommand implements Command {
     @Override
     public String buildString() {
@@ -52,27 +118,51 @@ public class ATControlCommandInterface {
     }
   }
   
+  /**
+   * Implementation of the "send emergency flag" AT command
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class StrobeEmergencyCommand implements Command {
     @Override
     public String buildString() {
-      return "AT*REF=" + commandCounter++ + "," + (0x11540000 | 0x00000100);
+      return "AT*REF=" + commandCounter++ + "," + (AT_REF_MAGIC | 0x00000100);
     }
   }
   
+  /**
+   * Implementation of the takeoff AT-Command
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class TakeoffCommand implements Command {
     @Override
     public String buildString() {
-      return "AT*REF=" + commandCounter++ + "," + (0x11540000 | 0x00000200);
+      return "AT*REF=" + commandCounter++ + "," + (AT_REF_MAGIC | 0x00000200);
     }
   }
   
+  /**
+   * Implementation of the land AT-Command
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class LandCommand implements Command {
     @Override
     public String buildString() {
-      return "AT*REF=" + commandCounter++ + "," + (0x11540000 | 0x00000000);
+      return "AT*REF=" + commandCounter++ + "," + (AT_REF_MAGIC | 0x00000000);
     }
   }
   
+  /**
+   * Implementation of the hover AT-Command
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class HoverCommand implements Command {
     @Override
     public String buildString() {
@@ -80,6 +170,14 @@ public class ATControlCommandInterface {
     }
   }
   
+  /**
+   * Implementation of the flight control AT-Command, letting the drone
+   * move as specified by the speed values set in fields of the 
+   * {@link ATControlCommandInterface}.  
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class FlyCommand implements Command {
     @Override
     public String buildString() {
@@ -87,9 +185,25 @@ public class ATControlCommandInterface {
     }
   }
   
+  /**
+   * Implementation of the set option command, allowing to set arbitrary option values
+   * of the drone.  
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class SetOptionCommand implements Command {
     public String optionName, value;
     
+    /**
+     * Creates a new "set-option command", setting the option
+     * "optionName" with the value "value". 
+     * 
+     * @param optionName
+     *   Option to be set
+     * @param value
+     *   Value that the option should be set to
+     */
     public SetOptionCommand(String optionName, String value) {
       this.optionName = optionName;
       this.value = value;
@@ -135,19 +249,50 @@ public class ATControlCommandInterface {
       return true;
     }
 
+    /**
+     * Generated by Eclipse: Internal function to retrieve an instance of the outer class
+     * @return
+     *   Outer class instance
+     */
     private ATControlCommandInterface getOuterType() {
       return ATControlCommandInterface.this;
     }
   }
-  
+  /**
+   * Wrapper for a command that can be put into the command stack. Commands in the
+   * commands stack can be executed multiple times to ensure that it has been
+   * executed on the AR.Drone. This object implements this capability by maintaining
+   * an internal use counter that keeps track of how often the current command has been
+   * formulated by the function {@link #buildString()}.
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class PlannedCommand implements Command {
     private Command command;
     private int usageCount = 0;
     
+    /**
+     * Wraps a command so that it can be put into the commandStack.
+     * 
+     * @param command
+     *   Command that should be wrapped
+     */
     public PlannedCommand(Command command) {
       this.command = command;
     }
 
+    /**
+     * Wraps a command so that it can be put into the commandStack, but
+     * allowing to be executed only once.
+     * 
+     * @param command
+     *   Command that should be wrapped
+     * @param single
+     *   If true the command will only be sent once to the drone. If false
+     *   the command will be strobed {@link ATControlCommandInterface.COMMAND_REPEATITIONS} 
+     *   times.
+     */
     public PlannedCommand(Command command, boolean single) {
       this.command = command;
       if (single) {
@@ -161,6 +306,13 @@ public class ATControlCommandInterface {
       return command.buildString();
     }
 
+    /**
+     * Returns how many times the command has been sent to the drone (how often
+     * {@link #buildString()} has been called.
+     * 
+     * @return
+     *   Count of how many times the command has been sent to the drone.
+     */
     private int getUseCount() {
       return usageCount;
     }
@@ -187,6 +339,11 @@ public class ATControlCommandInterface {
       return true;
     }
 
+    /**
+     * Generated by Eclipse: Internal function to retrieve an instance of the outer class
+     * @return
+     *   Outer class instance
+     */
     private ATControlCommandInterface getOuterType() {
       return ATControlCommandInterface.this;
     }
