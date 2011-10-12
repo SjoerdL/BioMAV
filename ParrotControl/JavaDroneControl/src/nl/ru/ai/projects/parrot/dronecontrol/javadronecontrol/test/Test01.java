@@ -37,7 +37,7 @@ import nl.ru.ai.projects.parrot.dronecontrol.javadronecontrol.DroneGroundStation
  * A little test class demonstrating the image streaming capabilities of the JavaDroneControl
  * library. 
  * 
- * @author paul
+ * @author Paul Konstantin Gerke
  */
 public class Test01 extends JFrame {
   private static DroneGroundStation drone = null;

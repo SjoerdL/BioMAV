@@ -20,7 +20,7 @@ package nl.ru.ai.projects.parrot.dronecontrol.javadronecontrol;
  * TODO:
  *   - ATM this is open loop control - should be closed loop control
  * 
- * @author paul
+ * @author Paul Konstantin Gerke
  *
  */
 public class DroneConfigurationChannel {

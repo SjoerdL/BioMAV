@@ -34,7 +34,7 @@ import com.codeminders.ardrone.VideoReceivedInterface;
  * The methods getImageData() and getTimestamp() are the most interesting methods when using this
  * library, exposing an interface for querying drone-images.  
  * 
- * @author paul
+ * @author Paul Konstantin Gerke
  *
  */
 public class VisionStandin implements VideoReceivedInterface {

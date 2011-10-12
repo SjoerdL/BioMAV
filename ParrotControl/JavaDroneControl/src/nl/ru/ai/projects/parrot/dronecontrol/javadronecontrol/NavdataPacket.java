@@ -28,7 +28,7 @@ import java.util.List;
  * via checksum checking.
  * 
  * To use this class initialize it using the default constructor. After initialization you can
- * parse/wrap a {@link DatagramPacket} using the function {link #parseNavdata(DatagramPacket)}. The parsed 
+ * parse/wrap a {@link DatagramPacket} using the function {@link #parseNavdata(DatagramPacket)}. The parsed 
  * data then is available via the public fields of this object. If the parsing goes wrong, the
  * method throws a {@link NavdataPacketFormatException}.
  * 
@@ -92,7 +92,7 @@ public class NavdataPacket {
   /**
    * Exception thrown if the received navdata packet contained invalid data.
    * 
-   * @author paul
+   * @author Paul Konstantin Gerke
    *
    */
   public static class NavdataPacketFormatException extends Exception {
@@ -108,10 +108,27 @@ public class NavdataPacket {
     }
   }
   
+  /**
+   * General representation of a header (including the following data)
+   * of a navdata packet sent by the AR.Drone
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class DataHeader {
     public int headerID;
     public byte[] data;
     
+    /**
+     * Initializes this DataHeader using data from a ByteBuffer
+     * 
+     * @param src
+     *   ByteBuffer that the herader information should be read from, starting
+     *   at the current ByteBuffer position.
+     * 
+     * @throws NavdataPacketFormatException
+     *   Thrown if the format of read header is invalid
+     */
     public DataHeader(ByteBuffer src) throws NavdataPacketFormatException {
       if (src.remaining() < 4) {
         throw new NavdataPacketFormatException("Header of option too small");
@@ -129,6 +146,13 @@ public class NavdataPacket {
     }
   }
   
+  /**
+   * Data structure object exposing the demo data set to Java (see AR.Drone SDK 1.8 
+   * for details)
+   * 
+   * @author Paul Konstantin Gerke
+   * 
+   */
   public class DemoDataStruct {
     public static final int HID = 0;
 
@@ -147,6 +171,12 @@ public class NavdataPacket {
     /**!< UAV's estimated linear velocity */
     public float[] velocity;
     
+    /**
+     * Initializes the demo data using the raw data from the demo header.
+     * 
+     * @param ba
+     *   Byte information read from the demo-section of the navdata.
+     */
     public DemoDataStruct(byte[] ba) {
       ByteBuffer bb = ByteBuffer.wrap(ba);
       bb.order(ByteOrder.LITTLE_ENDIAN);
@@ -170,10 +200,20 @@ public class NavdataPacket {
   
   public int droneState = -1;
   public int sequenceNumber = -1;
-  public int VisionFlag = -1;
+  public int visionFlag = -1;
   
   public DemoDataStruct demodata = null;
   
+  /**
+   * Parses a DatagramPacket sent from the drone via the Navdata stream and stores the navdata
+   * contents in the public fields of this object. 
+   * 
+   * @param packet
+   *   DatagramPacket received via the AR.Drone navdata stream
+   * @throws NavdataPacketFormatException
+   *   Thrown if the specified datagram packet does not contain navdata or if the received navdata packet
+   *   is broken.
+   */
   public void parseNavdata(DatagramPacket packet) throws NavdataPacketFormatException {
     ByteBuffer sourceByteBuffer = ByteBuffer.wrap(packet.getData(), packet.getOffset(), packet.getLength());
     sourceByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -185,9 +225,10 @@ public class NavdataPacket {
       }
     }
     
+    // Read standard fields
     droneState = sourceByteBuffer.getInt();
     sequenceNumber = sourceByteBuffer.getInt();
-    VisionFlag = sourceByteBuffer.getInt();
+    visionFlag = sourceByteBuffer.getInt();
     
     List<DataHeader> headers = new ArrayList<DataHeader>();
     // Extract headers and data
