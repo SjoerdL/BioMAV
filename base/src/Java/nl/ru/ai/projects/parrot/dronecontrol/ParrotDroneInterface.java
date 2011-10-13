@@ -14,8 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with The BioMAV project. If not, see <http://www.gnu.org/licenses/>.
 */
-package nl.ru.ai.projects.parrot.dronecontrol.javadronecontrol;
+package nl.ru.ai.projects.parrot.dronecontrol;
 
-public interface NavdataChannelObserver {
-  public void newNavdata(NavdataChannel channel);
+public interface ParrotDroneInterface extends ControlInterface, VideoPollInterface, SensoryDataInterface {
 }

@@ -1,3 +1,19 @@
+/*
+    This file is part of the BioMAV project.
+
+    The BioMAV project is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    The BioMAV project is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with The BioMAV project. If not, see <http://www.gnu.org/licenses/>.
+*/
 package nl.ru.ai.projects.parrot.dronecontrol.javadronecontrol;
 
 import java.net.DatagramPacket;
@@ -6,7 +22,31 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class wraps a navdata packet as received via the UDP to the drone and extracts the standard
+ * state fields nad the demo-data set from it. The class furthermore implements packet validation
+ * via checksum checking.
+ * 
+ * To use this class initialize it using the default constructor. After initialization you can
+ * parse/wrap a {@link DatagramPacket} using the function {@link #parseNavdata(DatagramPacket)}. The parsed 
+ * data then is available via the public fields of this object. If the parsing goes wrong, the
+ * method throws a {@link NavdataPacketFormatException}.
+ * 
+ * @author Paul Konstantin Gerke
+ *
+ */
 public class NavdataPacket {
+  /**
+   * Calculates the check sum across the specifed amount of bytes in the given byte buffer
+   *   
+   * @param bytes
+   *   ByteBuffer array containing the data that the checksum should be computed on. The checksum
+   *   computation starts at the current position of the buffer cursor.
+   * @param len
+   *   Amount of bytes that should be included for the checksum computation
+   * @return
+   *   The computed checksum
+   */
   public static int computeChecksum(ByteBuffer bytes, int len) {
     int result = 0;
     for (int i = 0; i < len; i++) {
@@ -17,6 +57,8 @@ public class NavdataPacket {
   }
   
   public static final int HID_CHECKSUM = 0xFFFF;
+  
+  /* Constants copied from official Parrot SDK */
   
   public static final int ARDRONE_FLY_MASK            = 1 << 0;  /*!< FLY MASK : (0) ardrone is landed, (1) ardrone is flying */
   public static final int ARDRONE_VIDEO_MASK          = 1 << 1;  /*!< VIDEO MASK : (0) video disable, (1) video enable */
@@ -48,22 +90,46 @@ public class NavdataPacket {
   public static final int ARDRONE_COM_WATCHDOG_MASK   = 1 << 30; /*!< Communication Watchdog : (1) com problem, (0) Com is ok */
   public static final int ARDRONE_EMERGENCY_MASK      = 1 << 31;  /*!< Emergency landing : (0) no emergency; (1) emergency */
 
+  /**
+   * Exception thrown if the received navdata packet contained invalid data.
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   public static class NavdataPacketFormatException extends Exception {
     private static final long serialVersionUID = -9002844056303380102L;
 
+    /**
+     * Creates a NavdataPacketFormatException with the specified reason.
+     * 
+     * @param why
+     */
     public NavdataPacketFormatException(String why) {
       super(why);
     }
-
-    public NavdataPacketFormatException() {
-      super();
-    }
   }
   
+  /**
+   * General representation of a header (including the following data)
+   * of a navdata packet sent by the AR.Drone
+   * 
+   * @author Paul Konstantin Gerke
+   *
+   */
   private class DataHeader {
     public int headerID;
     public byte[] data;
     
+    /**
+     * Initializes this DataHeader using data from a ByteBuffer
+     * 
+     * @param src
+     *   ByteBuffer that the herader information should be read from, starting
+     *   at the current ByteBuffer position.
+     * 
+     * @throws NavdataPacketFormatException
+     *   Thrown if the format of read header is invalid
+     */
     public DataHeader(ByteBuffer src) throws NavdataPacketFormatException {
       if (src.remaining() < 4) {
         throw new NavdataPacketFormatException("Header of option too small");
@@ -81,6 +147,13 @@ public class NavdataPacket {
     }
   }
   
+  /**
+   * Data structure object exposing the demo data set to Java (see AR.Drone SDK 1.8 
+   * for details)
+   * 
+   * @author Paul Konstantin Gerke
+   * 
+   */
   public class DemoDataStruct {
     public static final int HID = 0;
 
@@ -99,6 +172,12 @@ public class NavdataPacket {
     /**!< UAV's estimated linear velocity */
     public float[] velocity;
     
+    /**
+     * Initializes the demo data using the raw data from the demo header.
+     * 
+     * @param ba
+     *   Byte information read from the demo-section of the navdata.
+     */
     public DemoDataStruct(byte[] ba) {
       ByteBuffer bb = ByteBuffer.wrap(ba);
       bb.order(ByteOrder.LITTLE_ENDIAN);
@@ -122,10 +201,20 @@ public class NavdataPacket {
   
   public int droneState = -1;
   public int sequenceNumber = -1;
-  public int VisionFlag = -1;
+  public int visionFlag = -1;
   
   public DemoDataStruct demodata = null;
   
+  /**
+   * Parses a DatagramPacket sent from the drone via the Navdata stream and stores the navdata
+   * contents in the public fields of this object. 
+   * 
+   * @param packet
+   *   DatagramPacket received via the AR.Drone navdata stream
+   * @throws NavdataPacketFormatException
+   *   Thrown if the specified datagram packet does not contain navdata or if the received navdata packet
+   *   is broken.
+   */
   public void parseNavdata(DatagramPacket packet) throws NavdataPacketFormatException {
     ByteBuffer sourceByteBuffer = ByteBuffer.wrap(packet.getData(), packet.getOffset(), packet.getLength());
     sourceByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -137,9 +226,10 @@ public class NavdataPacket {
       }
     }
     
+    // Read standard fields
     droneState = sourceByteBuffer.getInt();
     sequenceNumber = sourceByteBuffer.getInt();
-    VisionFlag = sourceByteBuffer.getInt();
+    visionFlag = sourceByteBuffer.getInt();
     
     List<DataHeader> headers = new ArrayList<DataHeader>();
     // Extract headers and data
