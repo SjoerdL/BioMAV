@@ -1,3 +1,64 @@
-This project is still work-in-progress. Since we are very busy getting the Parrot up-and-running in time for the conference, we did not have the time to write any documentation for this project. This will be done as soon as possible after the conference.
+--------------------
+ The BioMAV Project
+--------------------
 
-If you use our code, please refer to our paper: Gerke, P. K., Langevoort, J., Lagarde, S., Bax, L., Grootswagers, T., Drenth, R.-J., Slieker, V., Vuurpijl, L., Haselager, P., Sprinkhuizen-Kuyper, I. van Otterlo, M., & de Croon, G. (2011, September). Biomav: bio-inspired intelligence for autonomous flight. In Proceedings of the international micro air vehicle conference and flight competitions 2011.
+Authors
+  Sjoerd Lagarde
+  Jurriaan Langevoort
+  Paul Konstantin Gerke
+  Robert-Jan Drenth
+  Laurie Bax
+  Tijl Grootswagers
+  Vincent Slieker
+  
+Content
+  1.0 Project description
+    1.1 Structure of the repository
+  2.0 General build guide
+  3.0 Todos
+
+-------------------------
+ 1.0 Project description
+-------------------------
+
+The BioMAV project repository contains all code used for creating, evaluating and executing the
+autonomous control engine used for the Internation Micro-Air Vehicle Conference and Flight 
+Competition 2011 by the student team from the Radboud University in Nijmegen. The software packet
+contains control software that can be used together with the Parrot AR.Drone from Parrot. We
+consistently used for our project the firmware version for the drone that comes together with the
+official SDK version 1.6. To up or downgrade download the SDK from Parrot. The archive available
+via their website contains the correct firmware. You can up or downgrade you SDK following the 
+instructions on their website (http://ardrone.parrot.com/parrot-ar-drone/uk/support/update).
+
+This project is still work-in-progress. At the moment we are busy documenting all our code which had to be completed in a rush before the conference with no or incomplete documentation.
+
+If you use our code, please refer to our paper: Gerke, P. K., Langevoort, J., Lagarde, S., Bax, L., Grootswagers, T., Drenth, R.-J., Slieker, V., Vuurpijl, L., Haselager, P., Sprinkhuizen-Kuyper, I. van Otterlo, M., & de Croon, G. (2011, September). Biomav: bio-inspired intelligence for autonomous flight. In Proceedings of the international micro air vehicle conference and flight competitions 2011 (still in press).
+
+---------------------------------
+ 1.1 Structure of the repository
+---------------------------------
+
+[TODO]
+
+-------------------------
+ 2.0 General build guide
+-------------------------
+
+All our projects are using standard GNU Make Makefiles as build tool. At the Java code is working on
+Windows, Linux and Mac OS-X. However, projects using a JNI have not been tested and do not
+work on Mac OS-X systems, so the C/C++ bits of the project only work on Windows and Linux systems. 
+Since only Windows and Linux are officially supported only build guides for these two systems are
+included in this project.
+
+Building for Linux
+
+
+Building for Windows
+
+-----------
+ 3.0 Todos
+-----------
+
+Make makefiles for all sub-projects
+
+Complete this README
