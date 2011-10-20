@@ -16,6 +16,23 @@
 */
 package nl.ru.ai.projects.parrot.dronecontrol;
 
+/**
+ * <p>
+ * This interface defines all function necessary to obtain data from the sensors of 
+ * the drone. Only sensors that seemed important for flying eight shapes around poles
+ * are implemented at the moment, though extensions are possible.
+ * </p>
+ * 
+ * <p>
+ * There is a special function integrated in this interface, which is called 
+ * {@link #droneSleep(long)}. This function was implemented to allow better timer 
+ * integration with the drone simulator. When the simulator is run, the sleep depends on
+ * the simulation speed, for the real drone the system clock is used.   
+ * </p>
+ * 
+ * @author Paul Konstantin Gerke
+ *
+ */
 public interface SensoryDataInterface {
   /**
    * Retrieves the time stamp of the last sensory data snapshot
@@ -53,9 +70,12 @@ public interface SensoryDataInterface {
 
   /**
    * Add a new sensor data observer to the drone that is called when
-   * new sensor data has been received.
+   * new sensor data has been received. As long as the observers are
+   * called, no new seonsory data will be received.
    * 
    * @param observer
+   *   Observer that should be notified about the new sensor data
+   *   received by this SensorydataInterface.
    */
   public void addSensorDataObserver(SensorDataObserver observer);
   

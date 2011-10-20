@@ -16,6 +16,26 @@
 */
 package nl.ru.ai.projects.parrot.dronecontrol;
 
+/**
+ * <p>
+ * The ControlInterface defines the functions the Parrot AR.Drone can be controlled
+ * with. It contains the basic movement commands like {@link #flyForward(double)}, 
+ * {@link #flyForward(double)}, {@link #flySideways(double)}, {@link #spin(double)},
+ * and {@link #setHeight(double)}, but also important state-switching functions like
+ * takeoff/land, emergency mode control functions and a function to switch the drone
+ * into hover mode.  
+ * </p>
+ * 
+ * <p>
+ * To complement the basic set of control functions, one function for retrieving the
+ * current mode the drone is in is also included in with this interface, to allow
+ * checking if commands could be executed successfully, or if some kind of error 
+ * occurred.
+ * </p>
+ * 
+ * @author Paul Konstantin Gerke
+ *
+ */
 public interface ControlInterface {
   public enum FlyingState {LANDED, FLYING, EMERGENCY, DISCONNECTED, BATTERY_LOW};
   
