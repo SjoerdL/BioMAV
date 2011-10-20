@@ -50,10 +50,17 @@ work on Mac OS-X systems, so the C/C++ bits of the project only work on Windows 
 Since only Windows and Linux are officially supported only build guides for these two systems are
 included in this project.
 
-Building for Linux
+- Building for Linux- 
 
+Requirements
+ - Oracle JDK or OpenJDK
+ - Javadoc
+ - GNU Make
+ - GNU Compiler Collection (for C++ and C)
 
-Building for Windows
+In order to build a pure Java project, no [... taking a break]
+
+- Building for Windows -
 
 -----------
  3.0 Todos
