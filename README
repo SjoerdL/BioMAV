@@ -86,6 +86,7 @@ and invoke make
 The compiled product(s) will be placed in the bin/ directory by default (or in the directory 
 defined by the environment variable BIN_DIR if you have overridden the default).
 
+
 - Building for Windows -
 
 Requirements
@@ -100,6 +101,9 @@ in the PATH environment variable.
 After these preconditions are met, the instructions for building are the same as for linux: 
 navigate to the project directory you want to build and start make (see the linux section for
 command examples).
+
+Do not forget to consult the sub-project specific README files for additional project specific
+build instructions or parameters.
 
 [When this text was written, these instructions were not tested. Still must be verified!]
 
