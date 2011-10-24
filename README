@@ -54,7 +54,7 @@ included in this project.
 - Building for Linux - 
 
 Requirements
- - Oracle JDK or OpenJDK
+ - Oracle JDK or OpenJDK (6 or higher)
  - Javadoc
  - GNU Make
  - GNU Compiler Collection (for C++ and C)
@@ -88,9 +88,20 @@ defined by the environment variable BIN_DIR if you have overridden the default).
 
 - Building for Windows -
 
-[in principle the same as linux only make shure to have jdk 1.6 installed, install msys and make 
-from mingw and let the path variable point to msys, the mingw binaries and the jdk binary map,
-nicer build guide yet to come]
+Requirements
+ - JDK (6 or higher)
+ - MinGW
+ - MSYS
+ 
+To build on windows you first need to make sure that MSYS, the JDK binaraies (like javac etc.)
+and MinGW, all are found from the command line. If neccessary include the in the required paths
+in the PATH environment variable. 
+
+After these preconditions are met, the instructions for building are the same as for linux: 
+navigate to the project directory you want to build and start make (see the linux section for
+command examples).
+
+[When this text was written, these instructions were not tested. Still must be verified!]
 
 -----------
  3.0 Todos
