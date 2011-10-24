@@ -20,7 +20,7 @@ COMPILER=g++
 
 LUA_INCLUDE:=libs/lua-5.1/include
 
-INCLUDES+=luapkg tk/libs/lua5.1/include tk/libs/armadillo-2.2.2/include /usr/lib/jvm/java-6-openjdk/include/ /usr/lib/jvm/java-6-openjdk/include/linux/ tk/libs/tolua++/include tk/libs/ode/include tk/libs/devil-1.7.8/include
+INCLUDES+=luapkg tk/libs/lua5.1/include tk/libs/armadillo-2.2.2/include $(JAVA_BASE_PATH)/include/ $(JAVA_BASE_PATH)/include/linux/ tk/libs/tolua++/include tk/libs/ode/include tk/libs/devil-1.7.8/include
 LIBS+= SDL ode GL GLU IL ILUT lua5.1 tolua++_static blas boost_thread armadillo
 LIBPATHS+=tk/libs/lua5.1/lib/Linux26g4 tk/libs/tolua++/lib tk/libs/ode/ode/src/.libs tk/libs/armadillo-2.2.2/include tk/libs/lua5.1/lib tk/libs/devil-1.7.8/lib/.libs
 

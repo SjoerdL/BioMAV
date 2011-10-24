@@ -10,7 +10,7 @@ all: $(addsuffix .class,$(addprefix $(BINDIR),$(basename $(JAVADEPS))))
 
 $(BINDIR)%.class: $(SRCDIR)%.java
 	@-mkdir $(BINDIR)
-	cd $(BINDIR) && $(JAVACOMPILER) -sourcepath $(realpath $(SRCDIR)) -d $(realpath $(BINDIR)) $(addprefix ../$(SRCDIR),$(JAVADEPS))
+	cd $(BINDIR) && $(JAVACOMPILER) -classpath $(BASE_JAR) -sourcepath $(realpath $(SRCDIR)) -d $(realpath $(BINDIR)) $(addprefix ../$(SRCDIR),$(JAVADEPS))
 	
 clean:
 	-rm $(addsuffix .class,$(addprefix $(BINDIR),$(basename $(JAVADEPS))))
