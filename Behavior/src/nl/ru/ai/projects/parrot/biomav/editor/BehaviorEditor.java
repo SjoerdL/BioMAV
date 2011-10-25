@@ -32,8 +32,10 @@ import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.algorithms.layout.FRLayout2;
 import edu.uci.ics.jung.graph.DelegateForest;
+import edu.uci.ics.jung.graph.DirectedGraph;
 import edu.uci.ics.jung.graph.DirectedOrderedSparseMultigraph;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
+import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.AbstractGraphMousePlugin;
@@ -233,6 +235,10 @@ public class BehaviorEditor extends JPanel {
     
     add(graphViewer, BorderLayout.CENTER);
     add(pcInterfacePanel, BorderLayout.EAST);
+  }
+  
+  public DirectedGraph<BehaviorVertex, TransitionEdge> getGraph() {
+    return graph;
   }
 
   public static void main(String[] args) {
