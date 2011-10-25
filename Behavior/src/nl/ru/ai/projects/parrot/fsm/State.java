@@ -146,10 +146,11 @@ public class State {
      * @throws InterruptedException 
      */
     public State run() throws InterruptedException {
-		double[] position = Simulator.getInstance().getDrone(0).getDronePosition();
-		PositionLogger.addPosition(position);    	
     	
 		if (State.logDronePosition) {
+	    double[] position = Simulator.getInstance().getDrone(0).getDronePosition();
+	    PositionLogger.addPosition(position);
+	    
 			// Replace decimal signs as to make text file easy accessible to Excel
 			String pos0 = Double.toString(position[0]).replace('.', ',');
 			String pos1 = Double.toString(position[1]).replace('.', ',');

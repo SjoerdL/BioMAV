@@ -5,17 +5,25 @@ import nl.ru.ai.projects.parrot.fsm.State;
 import nl.ru.ai.projects.parrot.fsm.Transition;
 
 public class Delay extends Transition {
+  private boolean doReinit = true;
+  private long lastTimeStamp = System.currentTimeMillis();
+  
   public Delay(BehaviorArray ba, State connectedTo) {
     super(connectedTo, ba.pdi, ba.pppi);
+    setDuration(1000);
   }
 
   @Override
   public boolean fire() {
-    try {
-      droneInterface.droneSleep(1000);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
+    if (doReinit) {
+      lastTimeStamp = System.currentTimeMillis();
+      doReinit = false;
+    } else {
+      if (System.currentTimeMillis() - lastTimeStamp >= getDuration()) {
+        doReinit = true;
+        return true;
+      }
     }
-    return true;
+    return false;
   }
 }

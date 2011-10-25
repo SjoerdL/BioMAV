@@ -6,7 +6,7 @@ public class StartState extends State {
   public StartState(BehaviorArray behaviors) {
     super("Start");
     
-    addBehavior(behaviors.initializeDroneBehavior);           
+    setEntryBehavior(behaviors.initializeDroneBehavior);
     setExitBehavior(behaviors.hoverBehavior);        
   }
 }
