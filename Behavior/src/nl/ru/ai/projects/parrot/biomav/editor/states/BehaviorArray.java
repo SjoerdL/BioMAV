@@ -17,7 +17,13 @@ public class BehaviorArray {
     passLeftBehavior, passRightBehavior, turnLeftBehavior, turnRightBehavior, 
     flyToPoleLeftBehavior, flyToPoleRightBehavior;
   
+  public ParrotDroneInterface pdi;
+  public PolePositionPollInterface pppi;
+  
   public BehaviorArray(ParrotDroneInterface pdi, PolePositionPollInterface pppi) {
+    this.pdi = pdi;
+    this.pppi = pppi;
+    
     initializeDroneBehavior = new InitializeDrone(pdi, pppi);
     initializeDroneBehavior.setDuration(2500);
     hoverBehavior = new Hover(pdi, pppi);

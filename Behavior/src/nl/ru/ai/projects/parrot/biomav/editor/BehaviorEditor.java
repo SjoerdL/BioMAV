@@ -121,7 +121,6 @@ public class BehaviorEditor extends JPanel {
     }
 
     pcInterfacePanel.validate();
-    pcInterfacePanel.repaint();
   }
   
   public BehaviorEditor() {
@@ -167,7 +166,7 @@ public class BehaviorEditor extends JPanel {
     graphViewer.getRenderContext().setEdgeLabelTransformer(new Transformer<TransitionEdge, String>() {
       @Override
       public String transform(TransitionEdge e) {
-        return "Edge: " + e.hashCode();
+        return e.getTransition();
       }
     });
     graphViewer.getRenderContext().setVertexShapeTransformer(renderer);
@@ -182,6 +181,20 @@ public class BehaviorEditor extends JPanel {
         }
         if (e.getStateChange() == ItemEvent.DESELECTED) {
           if (vertex == selectedPCInterface) {
+            setNewSelectedParameterControlInterface(null);
+          }
+        }
+      }
+    });
+    graphViewer.getPickedEdgeState().addItemListener(new ItemListener() {
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        TransitionEdge edge = (TransitionEdge) e.getItem();
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+          setNewSelectedParameterControlInterface(edge);
+        }
+        if (e.getStateChange() == ItemEvent.DESELECTED) {
+          if (edge == selectedPCInterface) {
             setNewSelectedParameterControlInterface(null);
           }
         }
