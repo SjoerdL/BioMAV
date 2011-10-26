@@ -118,7 +118,7 @@ public class BehaviorEditor extends JPanel {
         final int index = i;
         switch (parameterTypes[i]) {
           case OPTIONS:
-            final JComboBox<Object> optionComboBox = new JComboBox<Object>(pcInterface.getParameterOptions(i));
+            final JComboBox optionComboBox = new JComboBox(pcInterface.getParameterOptions(i));
             optionComboBox.setEditable(false);
             optionComboBox.setSelectedItem(pcInterface.getParameterValue(i));
             
