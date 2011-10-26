@@ -4,7 +4,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import nl.ru.ai.projects.parrot.biomav.editor.states.BehaviorArray;
 import nl.ru.ai.projects.parrot.biomav.editor.states.FlyLeftState;
@@ -16,8 +18,9 @@ import nl.ru.ai.projects.parrot.biomav.editor.states.StartState;
 import nl.ru.ai.projects.parrot.biomav.editor.states.TurnLeftState;
 import nl.ru.ai.projects.parrot.biomav.editor.states.TurnRightState;
 import nl.ru.ai.projects.parrot.fsm.State;
+import nl.ru.ai.projects.parrot.fsm.StateListener;
 
-public class BehaviorVertex implements ParameterControlInterface {
+public class BehaviorVertex implements ParameterControlInterface, StateListener {
   @SuppressWarnings("rawtypes")
   public static final Map<String, Class> FSM_STATES = new HashMap<String, Class>();
   static {
@@ -33,6 +36,9 @@ public class BehaviorVertex implements ParameterControlInterface {
   public static final String FSM_INIT_STATE = "Start";
   
   private String selectedBehaviorState = FSM_INIT_STATE;
+  private volatile boolean stateActive = false;
+  
+  private Set<BehaviorVertexListener> listeners = new HashSet<BehaviorVertexListener>();
   
   public String getSelectedBehavior() {
     return selectedBehaviorState;
@@ -42,7 +48,12 @@ public class BehaviorVertex implements ParameterControlInterface {
     if (!FSM_STATES.containsKey(state)) {
       throw new InvalidParameterException("setSelectedBehavior: " + state);
     }
+    stateActive = false;
     selectedBehaviorState = state;
+  }
+  
+  public boolean isActive() {
+    return stateActive;
   }
   
   @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -51,6 +62,7 @@ public class BehaviorVertex implements ParameterControlInterface {
     try {
       Constructor c = stateClass.getConstructor(BehaviorArray.class);
       State result = (State) c.newInstance(behaviors);
+      result.addStateListener(this);
       return result;
     } catch (NoSuchMethodException e) {
       e.printStackTrace();
@@ -93,5 +105,39 @@ public class BehaviorVertex implements ParameterControlInterface {
   public String[] getParameterNames() {
     String[] res = {"Behavior"}; 
     return res;
+  }
+
+  @Override
+  public void stateEntered(State state) {
+    stateActive = true;
+
+    BehaviorVertexListener[] ls;
+    synchronized (listeners) {
+      ls = listeners.toArray(new BehaviorVertexListener[0]);
+    }
+    for (BehaviorVertexListener l : ls) {
+      l.behaviorVertexActivityChanged(this);
+    }
+  }
+
+  @Override
+  public void stateLeft(State state) {
+    stateActive = false;
+
+    BehaviorVertexListener[] ls;
+    synchronized (listeners) {
+      ls = listeners.toArray(new BehaviorVertexListener[0]);
+    }
+    for (BehaviorVertexListener l : ls) {
+      l.behaviorVertexActivityChanged(this);
+    }
+}
+  
+  public void addBehaviorVertexListener(BehaviorVertexListener l) {
+    synchronized (listeners) {
+      if (!listeners.contains(l)) {
+        listeners.add(l);
+      }
+    }
   }
 }

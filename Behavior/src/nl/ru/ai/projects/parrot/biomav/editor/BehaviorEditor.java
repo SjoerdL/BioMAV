@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -72,7 +73,19 @@ public class BehaviorEditor extends JPanel {
   private EditingGraphMousePlugin<BehaviorVertex, TransitionEdge> graphMouseEditPlugin = new EditingGraphMousePlugin<BehaviorVertex, TransitionEdge>(InputEvent.CTRL_MASK, new Factory<BehaviorVertex>() {
       @Override
       public BehaviorVertex create() {
-        return new BehaviorVertex();
+        BehaviorVertex vertex = new BehaviorVertex();
+        vertex.addBehaviorVertexListener(new BehaviorVertexListener() {
+          @Override
+          public void behaviorVertexActivityChanged(BehaviorVertex vertex) {
+            SwingUtilities.invokeLater(new Runnable() {
+              @Override
+              public void run() {
+                graphViewer.repaint();
+              }
+            });
+          }
+        });
+        return vertex;
       }
     }, new Factory<TransitionEdge>() {
       @Override
@@ -190,6 +203,14 @@ public class BehaviorEditor extends JPanel {
       @Override
       public Font transform(TransitionEdge arg0) {
         return new Font(graphViewer.getFont().getName(), graphViewer.getFont().getStyle(), 16);
+      }
+    });
+    
+    // Fill color dependent on vertex activity
+    graphViewer.getRenderContext().setVertexFillPaintTransformer(new Transformer<BehaviorVertex, Paint>() {
+      @Override
+      public Paint transform(BehaviorVertex vertex) {
+        return vertex.isActive() ? Color.ORANGE : Color.RED;
       }
     });
     
