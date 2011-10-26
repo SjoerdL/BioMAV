@@ -3,7 +3,9 @@ package nl.ru.ai.projects.parrot.biomav.editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -158,7 +160,12 @@ public class BehaviorEditor extends JPanel {
     graphMouse.add(graphMouseTranslatePlugin);
     graphMouse.add(graphMousePickPlugin);
 
+    // Set label renderer
     VertexLabelAsShapeRenderer<BehaviorVertex, TransitionEdge> renderer = new VertexLabelAsShapeRenderer<BehaviorVertex, TransitionEdge>(graphViewer.getRenderContext());
+    graphViewer.getRenderContext().setVertexShapeTransformer(renderer);
+    graphViewer.getRenderer().setVertexLabelRenderer(renderer);
+
+    // Set label contents
     graphViewer.getRenderContext().setVertexLabelTransformer(new Transformer<BehaviorVertex, String>() {
       @Override
       public String transform(BehaviorVertex v) {
@@ -171,8 +178,20 @@ public class BehaviorEditor extends JPanel {
         return e.getTransition();
       }
     });
-    graphViewer.getRenderContext().setVertexShapeTransformer(renderer);
-    graphViewer.getRenderer().setVertexLabelRenderer(renderer);
+
+    // Set fonts
+    graphViewer.getRenderContext().setVertexFontTransformer(new Transformer<BehaviorVertex, Font>() {
+      @Override
+      public Font transform(BehaviorVertex v) {
+        return new Font(graphViewer.getFont().getName(), graphViewer.getFont().getStyle(), 20);
+      }
+    });
+    graphViewer.getRenderContext().setEdgeFontTransformer(new Transformer<TransitionEdge, Font>() {
+      @Override
+      public Font transform(TransitionEdge arg0) {
+        return new Font(graphViewer.getFont().getName(), graphViewer.getFont().getStyle(), 16);
+      }
+    });
     
     graphViewer.getPickedVertexState().addItemListener(new ItemListener() {
       @Override
