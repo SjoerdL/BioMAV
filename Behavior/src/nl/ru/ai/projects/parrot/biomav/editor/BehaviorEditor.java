@@ -263,7 +263,7 @@ public class BehaviorEditor extends JPanel {
     });
     
     ///////////// Side panel (parameter control)
-    pcInterfacePanel.setPreferredSize(new Dimension(300, 0));
+    pcInterfacePanel.setPreferredSize(new Dimension(200, 0));
     pcInterfacePanel.setLayout(new BorderLayout());
     
     pcInterfacePanelContents.setLayout(new GridLayout(0, 2, 0, 5));
