@@ -1,3 +1,116 @@
-This project is still work-in-progress. Since we are very busy getting the Parrot up-and-running in time for the conference, we did not have the time to write any documentation for this project. This will be done as soon as possible after the conference.
+--------------------
+ The BioMAV Project
+--------------------
 
-If you use our code, please refer to our paper: Gerke, P. K., Langevoort, J., Lagarde, S., Bax, L., Grootswagers, T., Drenth, R.-J., Slieker, V., Vuurpijl, L., Haselager, P., Sprinkhuizen-Kuyper, I. van Otterlo, M., & de Croon, G. (2011, September). Biomav: bio-inspired intelligence for autonomous flight. In Proceedings of the international micro air vehicle conference and flight competitions 2011.
+Authors
+  Sjoerd Lagarde
+  Jurriaan Langevoort
+  Paul Konstantin Gerke
+  Robert-Jan Drenth
+  Laurie Bax
+  Tijl Grootswagers
+  Vincent Slieker
+  
+Content
+  1.0 Project description
+    1.1 Structure of the repository
+  2.0 General build guide
+  3.0 Todos
+
+-------------------------
+ 1.0 Project description
+-------------------------
+
+The BioMAV project repository contains all code used for creating, evaluating and executing the
+autonomous control engine used for the Internation Micro-Air Vehicle Conference and Flight 
+Competition 2011 by the student team from the Radboud University in Nijmegen. The software packet
+contains control software that can be used together with the Parrot AR.Drone from Parrot. We
+consistently used for our project the firmware version for the drone that comes together with the
+official SDK version 1.6. To up or downgrade download the SDK from Parrot. The archive available
+via their website contains the correct firmware. You can up or downgrade you SDK following the 
+instructions on their website (http://ardrone.parrot.com/parrot-ar-drone/uk/support/update).
+
+This project is still work-in-progress. At the moment we are busy documenting all our code which
+had to be completed in a rush before the conference with no or incomplete documentation.
+
+If you use our code, please refer to our paper: Gerke, P. K., Langevoort, J., Lagarde, S., Bax, L., Grootswagers, T., Drenth, R.-J., Slieker, V., Vuurpijl, L., Haselager, P., Sprinkhuizen-Kuyper, I. van Otterlo, M., & de Croon, G. (2011, September). Biomav: bio-inspired intelligence for autonomous flight. In Proceedings of the international micro air vehicle conference and flight competitions 2011 (still in press).
+
+---------------------------------
+ 1.1 Structure of the repository
+---------------------------------
+
+[TODO]
+
+-------------------------
+ 2.0 General build guide
+-------------------------
+
+All our projects are using standard GNU Make Makefiles as build tool. At the Java code is working on
+Windows, Linux and Mac OS-X. However, projects using a JNI have not been tested and do not
+work on Mac OS-X systems, so the C/C++ bits of the project only work on Windows and Linux systems. 
+Since only Windows and Linux are officially supported only build guides for these two systems are
+included in this project.
+
+- Building for Linux - 
+
+Requirements
+ - Oracle JDK or OpenJDK (6 or higher)
+ - Javadoc
+ - GNU Make
+ - GNU Compiler Collection (for C++ and C)
+
+In order to build a pure Java project you can use the Makefile supplied in the different project
+directories. Most Java-based projects depend on the base-project which contains shared interfaces
+and algorithms for other projects of the BioMAV project. To build java, the Makefile assumes that
+the java compiler and other java related programs are found in the path-environment variable. You
+can supply a different command that is used to invoke the Java compiler and other tools by 
+setting environment variables. Important environment variables and their default values are:
+
+Environment variable  Def. Value     Description
+JAVA_COMPILER         javac          Java compiler used to build the java code
+JAVADOC_COMPILER      javadoc        Javadoc compiler used to build the java doc
+JAR_COMPRESSOR        jar            Jar file compressor
+BIN_DIR               bin            Directory where the compiled files and products will be placed
+DOC_DIR               doc            Directory where the compiled javadoc is placed
+###_JAR               BioMAV_###.jar Path to required java package ### (for example "base")
+
+If your path environment variable is set up to point to the required binaries (javac, javadoc, 
+etc.), you can simply change to the directory of the sub project you want to build:
+
+  cd (project-directory)
+
+and invoke make
+
+  make
+
+The compiled product(s) will be placed in the bin/ directory by default (or in the directory 
+defined by the environment variable BIN_DIR if you have overridden the default).
+
+
+- Building for Windows -
+
+Requirements
+ - JDK (6 or higher)
+ - MinGW
+ - MSYS
+ 
+To build on windows you first need to make sure that MSYS, the JDK binaraies (like javac etc.)
+and MinGW, all are found from the command line. If neccessary include the in the required paths
+in the PATH environment variable. 
+
+After these preconditions are met, the instructions for building are the same as for linux: 
+navigate to the project directory you want to build and start make (see the linux section for
+command examples).
+
+Do not forget to consult the sub-project specific README files for additional project specific
+build instructions or parameters.
+
+[When this text was written, these instructions were not tested. Still must be verified!]
+
+-----------
+ 3.0 Todos
+-----------
+
+Make makefiles for all sub-projects
+
+Complete this README

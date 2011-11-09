@@ -16,5 +16,11 @@
 */
 package nl.ru.ai.projects.parrot.dronecontrol;
 
+/**
+ * A joint interface of multiple interfaces, which together define the capabilities of
+ * the Parrot AR.Drone.
+ * 
+ * @author Paul Konstantin Gerke
+ */
 public interface ParrotDroneInterface extends ControlInterface, VideoPollInterface, SensoryDataInterface {
 }

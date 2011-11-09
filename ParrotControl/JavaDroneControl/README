@@ -1,0 +1,50 @@
+---------------------------
+  JavaDroneControl README
+---------------------------
+
+Author
+  Paul Konstantin Gerke
+
+Content
+  1.0 Project description
+  2.0 Buildguide
+  3.0 Todos
+  
+  
+-------------------------
+ 1.0 Project Description
+-------------------------
+
+This project is a Java API, which exposes functions to Java that allow to
+remote control the Parrot AR.Drone. The project is aimed at compatibility to
+the 1.6 release of the Parrot AR.Drone SDK and is programmed for the largest
+part in Java. The long-term goal is to implement the image decoding process
+in C++ and tramit the decoded images to Java using a JNI that can be compiled
+under all major operating systems.
+
+
+----------------
+ 2.0 Buildguide 
+----------------
+
+Using the Makefile
+
+(TODO)
+
+Using a Java development IDE
+
+1. Build the jar file from the base-package
+2. Import the Java source from this directory
+3. Add the base-jar file to you projects build path
+4. Build it and test the API using the test-classes
+
+-----------
+ 3.0 Todos
+-----------
+
+- Make a Makefile
+
+- Complete the implementation of the AR.Drone configuration channel (lots of
+  stupid copy-work)
+  
+- Implement the image decoding using C++ as an JNI

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TMP_FILE=/tmp/compilePackagesTmp
+TMP_FILE=/tmp/cPkgTmp
 
 files=`ls *.pkg`
 tolua_executeable=tolua++5.1

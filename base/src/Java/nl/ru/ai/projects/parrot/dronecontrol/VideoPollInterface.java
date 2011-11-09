@@ -16,6 +16,15 @@
 */
 package nl.ru.ai.projects.parrot.dronecontrol;
 
+/**
+ * <p>
+ * This interface defines functions to query the images of 
+ * the cameras that are attached to the drone.
+ * </p>
+ * 
+ * @author Paul Konstantin Gerke
+ *
+ */
 public interface VideoPollInterface {
   public static final int FRONT_VIDEO_FRAME_WIDTH = 320;
   public static final int FRONT_VIDEO_FRAME_HEIGHT = 240;

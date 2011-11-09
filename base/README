@@ -1,1 +1,35 @@
-This directory contains sources shared among different sub projects of this project
+---------------------
+ Base Project README
+---------------------
+
+Author
+  Paul Konstantin Gerke
+
+Content
+  1.0 Project description
+  2.0 Build guide
+  3.0 Todos
+
+-------------------------
+ 1.0 Project Description
+-------------------------
+
+This directory contains sources shared among different projects 
+of the BioMAV project.
+
+----------------
+ 2.0 Buildguide 
+----------------
+
+Using the Makefile
+
+Follow the standard build guide for Java projects. Invoking make creates the
+standard binary directory. If building succeeds, the directory will contain the
+BioMAV_base.jar that can be used to build the projectes depending on the base
+project.
+
+-----------
+ 3.0 Todos
+-----------
+
+

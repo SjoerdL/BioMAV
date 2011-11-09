@@ -29,4 +29,6 @@ EMBEDDED_LIBRARIES:=\
 EMBEDDED_LIBRARY_CLEAN_DIRS:=\
 	libs/LuaGL/src
 
+JAVA_BASE_PATH ?= /usb/lib/jvm/openjdk-6-java/
 
+BASE_JAR ?= $(shell readlink -e ../base/bin/BioMAV_base.jar)

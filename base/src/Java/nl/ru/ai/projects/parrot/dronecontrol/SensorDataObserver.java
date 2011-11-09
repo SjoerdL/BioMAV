@@ -16,6 +16,15 @@
 */
 package nl.ru.ai.projects.parrot.dronecontrol;
 
+/**
+ * This interface can be used for synchronous sensor data retrieval with the
+ * {@link SensoryDataInterface}. The defined function is called whenever new
+ * data is received by the sensor interface, and no new data is received for the
+ * duration of the the call to newSensorData.
+ * 
+ * @author Paul Konstantin Gerke
+ *
+ */
 public interface SensorDataObserver {
   /**
    * Called by {@link SensoryDataInterface} to notify the observer that
@@ -23,6 +32,7 @@ public interface SensorDataObserver {
    * asynchronously by the simulation thread and should exit as fast as possible. 
    * 
    * @param sender
+   *   SensoryDataInterface which called the callback and just received new data.
    */
   public void newSensorData(SensoryDataInterface sender);
 }

@@ -16,11 +16,29 @@
 */
 package nl.ru.ai.projects.parrot.dronecontrol;
 
+/**
+ * <p>
+ * This interface describes the capabilities that a pole detector should have. The set of
+ * function available defines which data is extracted from the camera images.
+ * </p>
+ * 
+ * <p>
+ * At the moment the heading relative to the forward-vector of a detected pole is 
+ * reported and the approximated distance to the pole in meters.
+ * </p>
+ * 
+ * @author Paul Konstantin Gerke
+ * @author Sjoerd Lagarde
+ * @author Jurriaan Langevoort
+ *
+ */
 public interface PolePositionPollInterface {
   /**
-   * Retrieves the time stamp of the last retrieved sample of pole positions. 
+   * Retrieves the time stamp of the last retrieved sample of pole positions and
+   * distances. 
    * 
    * @return
+   *   Time stamp in milli seconds
    */
   public long getPolePositionTimeStamp();
   
@@ -28,6 +46,7 @@ public interface PolePositionPollInterface {
    * Retrieves the last sample of pole positions visible to the camera. 
    * 
    * @return
+   *   <p>
    *   The array of angles (in rad) to all poles in the scene. The amount of 
    *   returned doubles always equals the amount of poles there 
    *   are in the scene. However, a double can be null, which means that it is not 
@@ -35,7 +54,14 @@ public interface PolePositionPollInterface {
    *   [-fov / 2, fov / 2] (fov = field of view of the front camera). A negative
    *   angle indicates that the pole is to the left of the center axis of the drone,
    *   a positive angle indicates that the given pole is to the right.
+   *   </p>
    *   
+   *   <p>
+   *   Array of pole distances. Indices in the array correspond to indices of the array returned
+   *   by {@link #getPoleDistances()}.
+   *   </p> 
+   */
+/* 
    * Notes:
    *   This function gives you a giant load of information. It is capable of 
    *   IDENTIFYING poles that get outside the field of view for a moment (the simulator 
@@ -53,6 +79,8 @@ public interface PolePositionPollInterface {
    * Gets the pole distances in meters. Elements are null if the given pole is not visible.
    * 
    * @return
+   *   Array of pole distances. Indices in the array correspond to indices of the array returned
+   *   by {@link #getPolePositions()}. 
    */
   public Double[] getPoleDistances();
 }
