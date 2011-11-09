@@ -38,8 +38,8 @@ public class TwitterAccess {
 	private boolean enabled;
 	
 	private TwitterAccess() {
-		oauthClient = new OAuthSignpostClient("kZlbmCQhwHIRO8XiCgqYFQ", "09KoNPsmuy1iSA7w3DmcedDZyJc0XqU7JeqZ3xpoU",
-				"278114906-pW2a0VyIkTiSwV0aB49se8wsBMapTsbueMfZbkfE", "pOjX0M0T97MxmWYOgP1jh18EnkzZCcHr46WsJbfC20o");
+		oauthClient = new OAuthSignpostClient("", "",
+				"", ""); // insert login details
 				 
 		twitter = new Twitter("BioMAV", oauthClient);
 	}
