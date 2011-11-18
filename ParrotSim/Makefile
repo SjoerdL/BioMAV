@@ -19,7 +19,7 @@ JNI_LIB_TARGET=Java/libParrotSimulator.so
 COMPILER=g++
 
 INCLUDES+=luapkg /usr/include/lua5.1/ $(JAVA_BASE_PATH)/include/ $(JAVA_BASE_PATH)/include/linux/
-LIBS+= SDL ode GL GLU IL ILUT lua tolua++ blas boost_thread
+LIBS+= SDL ode GL GLU IL ILUT lua5.1 tolua++5.1 blas boost_thread
 LIBPATHS+=
 
 
