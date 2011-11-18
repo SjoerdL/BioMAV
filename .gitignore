@@ -1,0 +1,27 @@
+# All files
+*.a
+*.o
+*.so
+*.class
+
+# Base directory
+
+base/bin/*
+base/doc/*
+
+# ParrotSim directory
+
+ParrotSim/bin/*
+ParrotSim/Java/libParrotSimulator.so
+ParrotSim/luapkg/*.?pp
+ParrotSim/parrotSimulator
+ParrotSim/javasrc/Simulator.hpp
+ParrotSim/javasrc/SimulatedDrone.hpp
+
+# ParrostSim/JavaDroneControl/ directory
+
+ParrotControl/JavaDroneControl/doc/*
+ParrotControl/JavaDroneControl/bin/*
+ParrotControl/JavaDroneControl/*.log
+
+
