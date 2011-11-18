@@ -3,6 +3,7 @@
 *.o
 *.so
 *.class
+*~
 
 # Base directory
 
