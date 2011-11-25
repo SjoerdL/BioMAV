@@ -29,7 +29,32 @@ under all major operating systems.
 
 Using the Makefile
 
-(TODO)
+The Makefiles requires that you have build the base package before making this
+project. You find the base package in BioMAV/base. Follow the instructions there
+and in the project README to build the base package.
+
+After you built the base package, make sure that your java compiler (usually
+javac) can be reached from the command line or export the environment variable
+JAVA_COMPILER so that it pointsto your javac-executable. Just as your java
+compiler the jar packaging tool (jar) should be reachable from the command line. 
+Set the evironment variable JAR_COMPRESSOR to specify a path to your jar 
+pacakger.
+
+The makefile furthermore tries to generate the javadoc for this project. So make
+sure that also the javadoc compiler (javadoc) can be reached from the 
+commandline (use the environment vraiable JAVADOC_COMPILER to specify an
+absolute path to the executable).
+
+Finally, the makefile loks at the current directory for the binary of the base 
+package. Usually, when building this package in separate, you need to specify 
+the full path to the base-package jar. For this you export the environment 
+variable BASE_JAR. If you downloaded the whole BioMAV project from github in
+its standard directory structure and built the base package first, on a linux
+system the required commands to build this project look like:
+
+  > export BASE_JAR=../../base/bin/BioMAV_base.jar
+  > make
+
 
 Using a Java development IDE
 
