@@ -14,7 +14,7 @@ SRC_DIR := src
 JAR_PACKAGE := $(BIN_DIR)/BioMAV_JavaDroneControl.jar
 DOC_FILE := $(DOC_DIR)/index.html
 
-SRC_FILES := $(shell find $(SRC_DIR) -type f -name '*.java')
+SRC_FILES := $(shell find . $(SRC_DIR) -type f -name '*.java')
 
 .PHONEY: all doc clean
 
