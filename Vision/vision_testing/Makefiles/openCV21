@@ -1,0 +1,46 @@
+## Makefile for vision testing
+PROGRAM = vision_testing
+
+## libraries
+LIBS=GL GLU glut highgui
+LDFLAGS=
+
+## source files
+include dependencies
+srcInput+=Webcam.cpp
+srcMain+=Input.cpp main.cpp 
+
+#-- add directory structure
+SRCMAIN=$(addprefix ,$(srcMain))
+SRCINPUT=$(addprefix input/,$(srcInput))
+SRCMISCELLANEOUS=$(addprefix miscellaneous/,$(srcMiscellaneous))
+SRCPREPROCESSING=$(addprefix preprocessing/,$(srcPreprocessing))
+SRCPROCESSING=$(addprefix processing/,$(srcProcessing))
+SRCRECOGNITION=$(addprefix recognition/,$(srcRecognition))
+SRCOUTPUT=$(addprefix output/,$(srcOutput))
+#-- gather source and objects
+srcAll=$(SRCMAIN) $(SRCINPUT) $(SRCMISCELLANEOUS) $(SRCPREPROCESSING) $(SRCPROCESSING) $(SRCRECOGNITION) $(SRCOUTPUT)
+CCSOURCES=$(addprefix src/,$(srcAll))
+CCOBJECTS=$(CCSOURCES:.cpp=.o)
+#-- something
+CCFLAGS=-Wall -fopenmp `pkg-config --cflags opencv` -DWITH_OPENGL
+CC=g++
+
+.PHONY: depend clean
+
+all: $(PROGRAM)
+
+$(PROGRAM): $(CCOBJECTS)
+	$(CC) $(CCFLAGS) -o $(PROGRAM) $(CCOBJECTS) $(addprefix -l,$(LIBS))
+
+.cpp.o:
+	$(CXX) $(CCFLAGS) $(addprefix -l,$(LIBS)) -c $< -o $@
+
+clean:
+	$(RM) -f $(CCOBJECTS) $(PROGRAM)
+
+run:
+	./$(PROGRAM)
+
+depend: $(SRCS)
+	makedepend $(INCLUDES) $^

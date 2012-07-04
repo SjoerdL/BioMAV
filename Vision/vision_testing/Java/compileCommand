@@ -1,0 +1,1 @@
+javac $(find -name '*.java') $(find ../../../ParrotSim/Java/src/ -name '*.java') $(find ../../../ParrotControl/JavaDroneControl/src/ -name '*.java')

@@ -1,0 +1,8 @@
+srcMain=Preprocessing.cpp Processing.cpp Recognition.cpp
+srcInput=
+srcMiscellaneous=LatInh.cpp
+srcPreprocessing=Qvadri2Sex.cpp Rgb2Act.cpp Rgb2Lms.cpp
+srcProcessing=Blob.cpp Edge.cpp Emd.cpp Line.cpp Contour.cpp Structure.cpp TemplateMatching.cpp
+srcRecognition=VerticalActivationCounter.cpp SimplePolePositionDetector.cpp
+srcOutput=
+
