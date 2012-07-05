@@ -16,6 +16,22 @@
 */
 package nl.ru.ai.projects.parrot.dronecontrol.javadronecontrol;
 
+/**
+ * This interface is used by the NavdataChannel object to notify objects
+ * that a new navdata packet has been received.
+ * 
+ * @author Paul Konstantin Gerke
+ *
+ */
 public interface NavdataChannelObserver {
+  /**
+   * Called by a {@link NavdataChannel} object to notify the receiving
+   * object that new navdata is available. During the call of this function
+   * it is guaranteed that no new navdata packets will be processed, 
+   * effectively resulting in a lock on the just received navdata.
+   * 
+   * @param channel
+   *   Channel that notified the object of new navdata.
+   */
   public void newNavdata(NavdataChannel channel);
 }

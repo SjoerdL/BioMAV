@@ -18,6 +18,7 @@ all: $(JAR_PACKAGE) doc
 
 $(JAR_PACKAGE): $(SRC_FILES)
 	-mkdir -p $(BIN_DIR)
+	echo $(SRC_FILES)
 	$(JAVA_COMPILER) -d $(BIN_DIR) $(SRC_FILES)
 	cd $(BIN_DIR); $(JAR_COMPRESSOR) cf ../$(JAR_PACKAGE) `find -maxdepth 1 -type d | grep -E '.{2,}'`
 	
